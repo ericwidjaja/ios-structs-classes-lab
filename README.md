@@ -16,7 +16,6 @@ class Giant {
 
 let fred = Giant()
 ```
-
 Will these three lines of code run? If not, why not?
 
 ```swift
@@ -24,9 +23,26 @@ fred.name = "Brick"
 fred.weight = 999.2
 fred.homePlanet = "Mars"
 ```
-
 Fix the class definition for `Giant` in the space below so that it **does** work:
+```swift
+the fred.homePlanet will not work because the property was initialized as a constant (let homePlanet: String = "Earth")
 
+To fix this, we need to change it to a 'var' type.
+class Giant {
+    var name: String = "Fred"
+    var weight: Double = 340.0
+    var homePlanet: String = "Earth"
+}
+
+let fred = Giant()
+fred.name = "Brick"
+fred.weight = 999.2
+fred.homePlanet = "Mars"
+
+print(fred.name) //Brick
+print(fred.weight) // 999.2
+print(fred.homePlanet) //Mars
+```
 
 ## Question 2
 
@@ -44,14 +60,20 @@ let bilbo = Alien(name: "Bilbo", height: 1.67, homePlanet: "Venus")
 Will these three lines of code run? If so, why not?
 
 ```swift
+
+The codes will not run because 'bilbo' was declared as a 'let' constant
+```
+Change the declaration of `bilbo` so that the above three lines of code **do** work:
+```swift
+
 bilbo.name = "Jake"
 bilbo.height = 1.42
 bilbo.homePlanet = "Saturn"
+
+var bilbo = Alien(name: "Bilbo", height: 1.67, homePlanet: "Venus")
+
+print(bilbo) //Alien(name: "Jake", height: 1.42, homePlanet: "Saturn")
 ```
-
-Change the declaration of `bilbo` so that the above three lines of code **do** work:
-
-
 ## Question 3
 
 Consider this bit of code that uses the `Giant` class:
@@ -64,8 +86,13 @@ jason.name = "Jason"
 ```
 
 What will the value of `edgar.name` be after those three lines of code are run? What will the value of `jason.name` be? Why?
-
-
+```swift
+print("The value of edgar.name is \(edgar.name)") // The value of edgar.name is edgar
+//and
+print("The value of jason.name is \(jason.name)") // The value of jason.name is Jason
+//Why?
+the Class had originally a constant with a value of'edgar', when jason is equal to edgar, the value in 'jason.name' is replaced from 'edgar' to 'Jason'
+```
 ## Question 4
 
 Given this bit of code that uses the `Alien` struct:
