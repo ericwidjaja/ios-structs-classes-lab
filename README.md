@@ -104,8 +104,14 @@ charlesFromJupiter.homePlanet = "Jupiter"
 ```
 
 What will the value of `charles.homePlanet` be after the above code run? What about the value of `charlesFromJupiter.homePlanet`? Why?
+```swift
+print("the value of charles.homePlanet is:   \(charles.homePlanet)")          
+    //the value of charles.homePlanet is: Pluto
 
-
+print("the value of charlesFromJupiter.homePlanet is: \(charlesFromJupiter.homePlanet)")        
+    //the value of charlesFromJupiter.homePlanet is: Jupiter                                
+    //because the property's value of homePlanet in the variable 'charlesFromJupiter' has updated into "Jupiter"
+```
 ## Question 5
 
 Here's a struct that represents a bank account:
@@ -124,37 +130,104 @@ struct BankAccount {
  }
 }
 ```
-
 Does this code work? Why or why not?
 
 Fix the `BankAccount` struct so it does work.
+```swift
 
+"the above codes do not work because in the properties of value types cannot be modified within its instance methods in Structures. The only way to modify these values, we have to use mutating in the instance method.
+
+struct BankAccount {
+    var owner: String
+    var balance: Double
+
+    mutating func deposit(_ amount: Double) {
+    balance += amount
+    }
+
+    mutating func withdraw(_ amount: Double) {
+    balance -= amount
+    }
+}
+```
 Given the code below (which should incorporate any fixes you made):
 
 ```swift
-var joeAccount = BankAccount(owner: "Joe", balance: 100.0)
+var joeAccount = BankAccount(owner: "Joe", balance: 200.0)
 var joeOtherAccount = joeAccount
 joeAccount.withdraw(50.0)
 ```
-
 What will the value of `joeAccount.balance` be after the above code runs? What about the value of `joeOtherAccount.balance`? Why?
+```swift
 
+print(joeAccount.balance) // $50
+print(joeOtherAccount.balance) //$100
 
+//because the value in the joeOtherAccount.balance stays at initial instance 'joeAccount' value.
+```
 ## Question 6
 
 a. Write a struct called `Person` that has 3 properties of type `String`: a first name, a last name and a middle name. Have the middle name be optional. Create 2 instances of a `Person`, one with a middle name and one without. Print one of their first names.
+```swift
+struct Person {
+    var firstName: String
+    var middleName: String?
+    var lastName: String
+}
+var poet = Person (firstName:"Emily", middleName: "", lastName:"Dickinson")
+var writer = Person (firstName: "Edgar", middleName: "Allan", lastName: "Poe")
 
-
+print(poet.firstName)
+```
 b. Write a method in `Person` called `fullName` that will return a formatted string of an instance's full name. Call this method on both the instances you created in part a.
 
+```swift
+struct Person {
+    var firstName: String
+    var middleName: String?
+    var lastName: String
 
+    func fullName() -> String {
+        if let middleName = middleName {
+            return "\(firstName) \(middleName) \(lastName)"
+            } else {
+            return "\(firstName) \(lastName)"
+        }
+    }
+
+}
+
+var poet = Person (firstName:"Emily", middleName: "", lastName:"Dickinson")
+var writer = Person (firstName: "Edgar", middleName: "Allan", lastName: "Poe")
+
+print(poet.fullName())      //Emily  Dickinson
+print(writer.fullName())    //Edgar Allan Poe
+```
 ## Question 7
 
 a. Create a struct called `Book` that has properties `title`, `author` and `rating`, of type `String`, `String`, and `Double` respectively. Create some instances of `Book`.
 
-
 b. Add a method to `Book` called `isGood` that returns `true` if its rating is greater than or equal to 7
+```swift
+struct Book {
+    let title: String = "Executive Orders"
+    let author: String = "Tom Clancy"
+    var rating: Double = 8.5
 
+    func isGood() -> Bool {
+        if rating >= 7 {
+            return true
+        } else {
+            return false
+        }
+    }
+
+}
+
+let fictionThriller = Book()
+
+print("The \(fictionThriller.title) by \(fictionThriller.author) has \(fictionThriller.rating) rating. This statement is \(fictionThriller.isGood())")
+```
 
 ## Question 8
 
@@ -233,19 +306,62 @@ F = 1.8 * C + 32
 K = C + 273
 
 a. Make a struct called `FreezingPoint` that has three static properties: `celsius`, `fahrenheit`, and `kelvin`. Give them all values equal to the freezing point of water.
-
-
+```swift
+struct FreezingPoint {
+    var celsius: Double = 0.0
+    var fahrenheit: Double = 32.0
+    var kelvin: Double = 273.2
+}
+```
 b. Make a struct called `Celsius` that has one property: `celsius`, and two methods `getFahrenheitTemp`, and `getKelvinTemp`. Make the values of `fahrenheit` and `kelvin` correct values, converted from the `celsius` property.
 
 ```swift
+struct Celsius {
+    var celsius: Double = 0.0
+    var fahrenheit: Double
+    var kelvin: Double
+
+    init(celsius: Double) {
+        self.celsius = +celsius
+        kelvin = 273.2 + celsius
+        fahrenheit = 1.8 * celsius + 32
+    }
+}
+
 var tenDegreesCelsius = Celsius(celsius: 10.0)
 tenDegreesCelsius.celsius //returns 10.0
-tenDegreesCelsius.getKelvinTemp() //returns 283.0
-tenDegreesCelsius.getFahrenheitTemp() //returns 50.0
+tenDegreesCelsius.kelvin //returns 283.0
+tenDegreesCelsius.fahrenheit //returns 50.0
+
+print("\(tenDegreesCelsius.celsius) Celsius")
+print("\(tenDegreesCelsius.kelvin) Kelvin")
+print("\(tenDegreesCelsius.fahrenheit) Fahrenheit")
 ```
-
 c. Give the `Celsius` struct a method called `isBelowFreezing` that returns a `Bool` (true if the temperature is below freezing).
+```swift
+struct Celsius {
+    var celsius: Double = 0.0
+    var fahrenheit: Double
+    var kelvin: Double
 
+init(celsius: Double) {
+    self.celsius = +celsius
+    kelvin = 273.2 + celsius
+    fahrenheit = 1.8 * celsius + 32
+
+func isBelowFreezing() -> Bool {
+        if self.celsius < 0.0 {
+            return true
+            } else {
+            return false
+            }
+        }
+    print("Is it below freezing? (true/false)  \(isBelowFreezing())")
+    }
+}
+
+var tenDegreesCelsius = Celsius(celsius: 10.0)
+```
 
 ## Question 10
 
@@ -254,19 +370,44 @@ Create a struct called `RGBColor` that has 3 properties, `red`, `green`, `blue` 
 Given the below array of color dictionaries, create an array of `RGBColor`.
 
 ```swift
+
+struct RGBColor {
+    var red : Double
+    var green : Double
+    var yellow : Double
+}
+
 let colorDictArray: [[String: Double]] = [["red": 1.0, "green": 0.0, "blue": 0.0],
- ["red": 0.0, "green": 1.0, "blue": 0.0],
- ["red": 0.0, "green": 0.0, "blue": 1.0],
- ["red": 0.6, "green": 0.9, "blue": 0.0],
- ["red": 0.2, "green": 0.2, "blue": 0.5],
- ["red": 0.5, "green": 0.1, "blue": 0.9],]
+["red": 0.0, "green": 1.0, "blue": 0.0],
+["red": 0.0, "green": 0.0, "blue": 1.0],
+["red": 0.6, "green": 0.9, "blue": 0.0],
+["red": 0.2, "green": 0.2, "blue": 0.5],
+["red": 0.5, "green": 0.1, "blue": 0.9],]
+
+var rgbArray = [RGBColor]()
+for dict in colorDictArray {
+    rgbArray.append(RGBColor(red: dict["red"]!, green: dict["green"]!, yellow: dict["blue"]!))
+}
+
+print(rgbArray[3])
+
+//result of class work
 ```
-
-
 ## Question 11
 
 a. Create a struct called `Movie` that has properties for `name` (`String`), `year` (`Int`), `genre` (`String`), `cast` (`[String]`), and `description` (`String`). Create an instance of your `Movie` class
+```swift
+class Movie {
+    var name: String = "Yesterday (2019 Film)"
+    var year: Int = 2019
+    var genre: String = "Drama/Romantic Comedy"
+    var cast: [String] = ["Himesh Patel", "Lily James", "Ed Sheeran", "Kate McKinnon"]
+    var description: String = "Yesterday is a 2019 British romantic comedy film directed by Danny Boyle and written by Richard Curtis, based on an original screenplay by Jack Barth and Mackenzie Crook. It stars Himesh Patel as a struggling musician who, after an accident, finds himself the only person who remembers the Beatles; he becomes famous after taking credit for writing and performing their songs."
+}
 
+let dramaMovie = Movie()
+print(dramaMovie.description)
+```
 b. Create an instance method inside `Movie` called `blurb` that returns a formatted string describing the movie.
 
 Ex: "Borat came out in 2006. It was an odd film starring Sacha Baron Cohen as a man named Borat who was visiting America from Kazakhstan."
